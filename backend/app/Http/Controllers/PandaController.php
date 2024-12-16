@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePandaRequest;
 use App\Http\Resources\PandaResource;
 use App\Models\Panda;
 use Illuminate\Http\Request;
@@ -36,15 +37,9 @@ class PandaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePandaRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:1|max:255',
-            'sex' => 'required|in:M,F', 
-            'birth' => 'nullable|date',
-        ]);
-
-        $panda = Panda::create($request->all());
+        $panda = Panda::create($request->validated()); 
         return new PandaResource($panda);
     }
 
@@ -60,10 +55,10 @@ class PandaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StorePandaRequest $request, string $id)
     {
         $query = Panda::findOrFail($id);
-        $query->update($request->all());
+        $query->update($request->all())->validated();
         return new PandaResource($query);
     }
 
