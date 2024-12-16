@@ -38,7 +38,14 @@ class PandaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:1|max:255',
+            'sex' => 'required|in:M,F', 
+            'birth' => 'nullable|date',
+        ]);
+
+        $panda = Panda::create($request->all());
+        return new PandaResource($panda);
     }
 
     /**
@@ -55,7 +62,9 @@ class PandaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $query = Panda::findOrFail($id);
+        $query->update($request->all());
+        return new PandaResource($query);
     }
 
     /**
@@ -63,6 +72,8 @@ class PandaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $query = Panda::findOrFail($id);
+        $query->delete();
+        return new PandaResource($query);
     }
 }
