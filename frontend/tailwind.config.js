@@ -6,6 +6,7 @@ export default {
     ],
     theme: {
       extend: {},
+      'custom-bg': '#e2dbac',
     },
     plugins: [
         import('@tailwindcss/aspect-ratio'),
